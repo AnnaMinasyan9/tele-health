@@ -34,12 +34,11 @@ export function TextField({
         autoCorrect={autoCorrect}
         {...rest}
       />
+        <View style={styles.fieldErrorContainer}>
 
       {errorMessage !== undefined && (
-        <View style={styles.fieldErrorContainer}>
-          {!!errorMessage && <Text style={styles.fieldError}>{errorMessage}</Text>}
-        </View>
-      )}
+          <Text style={styles.fieldError}>{errorMessage}</Text>
+      )}</View>
     </View>
   );
 }
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
   },
   fieldErrorContainer: {
     height: 25,
-    padding: spacing.xs,
+    paddingLeft: spacing.xs,
   },
   fieldError: {
     color: colors.error,

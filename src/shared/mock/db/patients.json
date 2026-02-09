@@ -1,0 +1,23 @@
+[
+    {
+      "id": "pat_1",
+      "username": "anna.brown",
+      "fullName": "Anna Brown",
+      "email": "anna.brown@example.com",
+      "phone": "+1(234) 567890",
+      "doctorId": "doc_1",
+      "avatarUrl": "",
+      "role": "patient"
+    },
+    {
+      "id": "pat_2",
+      "username": "michael.lee",
+      "fullName": "Michael Lee",
+      "email": "michael.lee@example.com",
+      "phone": "+1(234) 567890",
+      "doctorId": "doc_1",
+      "avatarUrl": "",
+      "role": "patient"
+    }
+  ]
+  

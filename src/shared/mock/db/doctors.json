@@ -1,0 +1,28 @@
+[
+    {
+      "id": "doc_1",
+      "username": "dr.john.smith",
+      "fullName": "Dr. John Smith",
+      "specialty": "Family Medicine",
+      "email": "dr.john.smith@example.com",
+      "phone": "+1234567890",
+      "avatarUrl": "https://img.freepik.com/free-photo/confident-doctor-clinic_23-2151983463.jpg?w=360",
+      "patientsIds": [
+        "pat_1",
+        "pat_2"
+      ],
+      "role": "doctor"
+    },
+    {
+      "id": "doc_2",
+      "username": "dr.jane.doe",
+      "fullName": "Dr. Jane Doe",
+      "specialty": "Pediatrics",
+      "email": "dr.jane.doe@example.com",
+      "phone": "+1234567890",
+      "avatarUrl": "https://img.freepik.com/free-photo/confident-doctor-clinic_23-2151983463.jpg?w=360",
+      "patientsIds": [],
+      "role": "doctor"
+    }
+  ]
+  

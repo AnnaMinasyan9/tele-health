@@ -1,0 +1,1 @@
+export const MOCK_SESSION_KEY = "tele-health.mock.session";
