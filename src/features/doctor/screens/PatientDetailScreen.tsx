@@ -1,18 +1,24 @@
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { useCallback } from "react";
-import { StyleSheet, View } from "react-native";
+import { useCallback, useEffect, useMemo } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 
-import { EmptyState, NavHeader } from "@/shared/ui";
-import { PatientProfileCard } from "@/widgets";
+import { EmptyState, NavHeader, SectionHeader } from "@/shared/ui";
+import { PatientProfileCard, SessionRow } from "@/widgets";
+import type { Session } from "@shared/models";
 import { colors, spacing } from "@shared/theme";
 
 import { selectCurrentUser } from "@shared/store/auth";
-import { useAppSelector } from "@shared/store/hooks";
+import { useAppDispatch, useAppSelector } from "@shared/store/hooks";
 import { selectDoctorPatientById } from "@shared/store/patients/patients.selectors";
+import { getSessionsByDoctorId } from "@shared/store/session";
+import {
+  selectSessionsByDoctorAndPatientId,
+} from "@shared/store/session/session.selector";
 
 export function PatientDetailScreen() {
   const { id: patientId } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const currentUser = useAppSelector(selectCurrentUser);
   const doctorId = currentUser?.id;
@@ -21,7 +27,65 @@ export function PatientDetailScreen() {
     selectDoctorPatientById(state, doctorId, patientId),
   );
 
+  const sessions = useAppSelector((state) =>
+    selectSessionsByDoctorAndPatientId(state, doctorId, patientId),
+  );
+
+  useEffect(() => {
+    if (!doctorId) return;
+    dispatch(getSessionsByDoctorId(doctorId));
+  }, [dispatch, doctorId]);
+
   const handleBack = useCallback(() => router.back(), [router]);
+
+  
+
+  const renderItem = useCallback(({ item }: { item: Session }) => {
+    return (
+      <View style={styles.rowWrapper}>
+        <SessionRow session={item} />
+      </View>
+    );
+  }, []);
+
+  const keyExtractor = useCallback((item: Session) => item.id ?? "", []);
+
+  const sessionLabel = useMemo(() => {
+    const count = sessions.length;
+    return count > 0 ? `Upcoming Sessions (${count})` : "Upcoming Sessions";
+  }, [sessions.length]);
+
+  const ListEmptyComponent = useMemo(
+    () => (
+      <EmptyState
+        icon="📅"
+        title="No upcoming sessions"
+        subtitle="Tap the button above to schedule one"
+      />
+    ),
+    [],
+  );
+
+  const ListHeaderComponent = useMemo(() => {
+    if (!patient) return null;
+
+    return (
+      <>
+        <PatientProfileCard
+          name={patient.fullName}
+          email={patient.email}
+          phone={patient.phone}
+          doctorName={currentUser?.fullName}
+        />
+
+        <SectionHeader title={sessionLabel} />
+      </>
+    );
+  }, [
+    patient,
+    currentUser?.fullName,
+    sessionLabel,
+  ]);
 
   if (!patient) {
     return (
@@ -38,12 +102,16 @@ export function PatientDetailScreen() {
   return (
     <>
       <NavHeader title={patient.fullName} onBack={handleBack} />
-      <PatientProfileCard
-          name={patient.fullName}
-          email={patient.email}
-          phone={patient.phone}
-          doctorName={currentUser?.fullName}
-        />
+
+      <FlatList
+        data={sessions}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        initialNumToRender={10}
+        contentContainerStyle={styles.listContent}
+        ListHeaderComponent={ListHeaderComponent}
+        ListEmptyComponent={ListEmptyComponent}
+      />
     </>
   );
 }
