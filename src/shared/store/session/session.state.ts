@@ -8,6 +8,8 @@ export interface SessionState {
     patientSessionsError: string | null;
     doctorSessionsStatus: RequestStatus;
     doctorSessionsError: string | null;
+    createSessionStatus: RequestStatus;
+    createSessionError: string | null;
 }
 
 export const initialState: SessionState = {
@@ -17,4 +19,6 @@ export const initialState: SessionState = {
     patientSessionsError: null,
     doctorSessionsStatus: RequestStatus.IDLE,
     doctorSessionsError: null,
+    createSessionStatus: RequestStatus.IDLE,
+    createSessionError: null,
 };

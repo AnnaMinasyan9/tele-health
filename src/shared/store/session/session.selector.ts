@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { type Session } from "@shared/models";
+import { RequestStatus, type Session } from "@shared/models";
 import type { RootState } from "../store";
 
 export const EMPTY_SESSIONS: Session[] = [];
@@ -24,3 +24,4 @@ export const selectSessionsByDoctorAndPatientId = createSelector(
     return filtered.length ? filtered : EMPTY_SESSIONS;
   }
 );
+export const selectIsSessionCreating = (state: RootState) => state.sessions.createSessionStatus === RequestStatus.PENDING;

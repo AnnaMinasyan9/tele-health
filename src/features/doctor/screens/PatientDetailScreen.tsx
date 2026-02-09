@@ -2,16 +2,17 @@ import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useEffect, useMemo } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
-import { EmptyState, NavHeader, SectionHeader } from "@/shared/ui";
+import { EmptyState, MainButton, NavHeader, SectionHeader } from "@/shared/ui";
 import { PatientProfileCard, SessionRow } from "@/widgets";
-import type { Session } from "@shared/models";
+import type { CreateSessionPayload, Session } from "@shared/models";
 import { colors, spacing } from "@shared/theme";
 
 import { selectCurrentUser } from "@shared/store/auth";
 import { useAppDispatch, useAppSelector } from "@shared/store/hooks";
 import { selectDoctorPatientById } from "@shared/store/patients/patients.selectors";
-import { getSessionsByDoctorId } from "@shared/store/session";
+import { createSession, getSessionsByDoctorId } from "@shared/store/session";
 import {
+  selectIsSessionCreating,
   selectSessionsByDoctorAndPatientId,
 } from "@shared/store/session/session.selector";
 
@@ -31,6 +32,8 @@ export function PatientDetailScreen() {
     selectSessionsByDoctorAndPatientId(state, doctorId, patientId),
   );
 
+  const isSessionCreating = useAppSelector(selectIsSessionCreating);
+
   useEffect(() => {
     if (!doctorId) return;
     dispatch(getSessionsByDoctorId(doctorId));
@@ -38,7 +41,18 @@ export function PatientDetailScreen() {
 
   const handleBack = useCallback(() => router.back(), [router]);
 
-  
+  const handleScheduleSession = useCallback(() => {
+    if (!doctorId || !patientId || !patient) return;
+
+    const payload: CreateSessionPayload = {
+      doctorId,
+      patientId,
+      location: "online",
+      durationMinutes: 60,
+    };
+
+    dispatch(createSession(payload));
+  }, [dispatch, doctorId, patientId, patient]);
 
   const renderItem = useCallback(({ item }: { item: Session }) => {
     return (
@@ -78,12 +92,21 @@ export function PatientDetailScreen() {
           doctorName={currentUser?.fullName}
         />
 
+        <MainButton
+          title="Add Schedule Session"
+          onPress={handleScheduleSession}
+          loading={isSessionCreating}
+          style={styles.scheduleButton}
+        />
+
         <SectionHeader title={sessionLabel} />
       </>
     );
   }, [
     patient,
     currentUser?.fullName,
+    handleScheduleSession,
+    isSessionCreating,
     sessionLabel,
   ]);
 

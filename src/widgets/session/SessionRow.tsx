@@ -14,7 +14,6 @@ interface SessionRowProps {
     session: Session;
 }
 
-
 function formatSessionDateTime(iso: string): { date: string; time: string } {
     const d = new Date(iso);
 
@@ -36,10 +35,7 @@ function formatSessionDateTime(iso: string): { date: string; time: string } {
 
     return { date, time };
 }
-/**
- * Dumb presentational row for a single session.
- * Shows person avatar, name, location, address, duration, date & time.
- */
+
 export function SessionRow({
     session
 }: SessionRowProps) {
@@ -61,7 +57,6 @@ export function SessionRow({
                 </View>
             </View>
 
-            {/* Address (clinic sessions only) */}
             {isClinic && session.location && (
                 <View style={styles.addressRow}>
                     <Text style={styles.addressIcon}>📍</Text>
@@ -71,7 +66,6 @@ export function SessionRow({
                 </View>
             )}
 
-            {/* Date & time — "Feb 8, 2026 • 10:30 AM" */}
             <View style={styles.timeRow}>
                 <Text style={styles.date}>{date}</Text>
                 <Text style={styles.time}>{time}</Text>

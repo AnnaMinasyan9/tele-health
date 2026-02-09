@@ -10,3 +10,9 @@ export interface Session {
         doctorName: string;
     };
 }
+export interface CreateSessionPayload {
+    doctorId: string;
+    patientId: string;
+    location: string;
+    durationMinutes: number;
+};

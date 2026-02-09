@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RequestStatus } from "@shared/models";
 import { initialState } from "./session.state";
-import { getSessionsByDoctorId, getSessionsByPatientId } from "./session.thunk";
+import { createSession, getSessionsByDoctorId, getSessionsByPatientId } from "./session.thunk";
 
 export const sessionSlice = createSlice({
     name: "session",
@@ -35,6 +35,26 @@ export const sessionSlice = createSlice({
                 state.doctorSessionsStatus = RequestStatus.FAILED;
                 state.doctorSessionsError = action.payload ?? action.error.message ?? "Unknown error";
             })
+            .addCase(createSession.pending, (state) => {
+                state.createSessionStatus = RequestStatus.PENDING;
+                state.createSessionError = null;
+            })
+            .addCase(createSession.fulfilled, (state, action) => {
+                const doctorId = action.payload.doctorId;
+                const patientId = action.payload.patientId;
+
+                const doctorList = state.doctorSessions[doctorId] ?? [];
+                state.doctorSessions[doctorId] = [action.payload, ...doctorList];
+
+                const patientList = state.patientSessions[patientId] ?? [];
+                state.patientSessions[patientId] = [action.payload, ...patientList];
+                state.createSessionStatus = RequestStatus.SUCCEEDED;
+                state.createSessionError = null;
+            })
+            .addCase(createSession.rejected, (state, action) => {
+                state.createSessionStatus = RequestStatus.FAILED;
+                state.createSessionError = action.payload ?? action.error.message ?? "Unknown error";
+            })  
     }
 })
 

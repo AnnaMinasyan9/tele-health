@@ -6,7 +6,7 @@ import doctorsJson from "./db/doctors.json";
 import patientsJson from "./db/patients.json";
 import sessionsJson from "./db/sessions.json";
 import { API_ROUTES, generateResponse, STATUS_CODES, VALIDATION_MESSAGES } from "./lib";
-import { handleAuthLogin, handleAuthLogout, handleDoctorById, handlePatientsByDoctorId, handleSessionsByDoctorId, handleSessionsByPatientId } from "./lib/handlers";
+import { handleAuthLogin, handleAuthLogout, handleCreateSession, handleDoctorById, handlePatientsByDoctorId, handleSessionsByDoctorId, handleSessionsByPatientId } from "./lib/handlers";
 import { MockDB } from "./models/db";
 
 const db: MockDB = {
@@ -37,7 +37,10 @@ const adapter: AxiosAdapter = async (config) => {
 
     case /^\/sessions\/doctor\/[^/]+$/.test(url):
       return handleSessionsByDoctorId(db, config);
-      
+
+    case url === API_ROUTES.CREATE_SESSION:
+      return handleCreateSession(db, config);
+
     default:
       return generateResponse(config, STATUS_CODES.NOT_FOUND, {
         message: VALIDATION_MESSAGES.NOT_FOUND,

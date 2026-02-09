@@ -1,3 +1,4 @@
+export * from "./create-session.handler";
 export * from "./doctor-by-id.handler";
 export * from "./login.handler";
 export * from "./logout.handler";
