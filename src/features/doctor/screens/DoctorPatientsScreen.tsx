@@ -100,6 +100,7 @@ export function DoctorPatientsScreen() {
       <DoctorPatientsHeader
         name={currentUser?.fullName ?? ""}
         patientCount={patients.length}
+        onDevTools={() => router.push("/(home)/dev-tools")}
         onLogout={handleLogout}
       />
 

@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import { useCallback, useEffect, useMemo } from "react";
 import type { ListRenderItem } from "react-native";
 import { FlatList, StyleSheet, View } from "react-native";
@@ -13,6 +14,7 @@ import { DoctorCard, PatientHomeHeader, SessionRow } from "@widgets";
 
 export function PatientHomeScreen() {
   const styles = useStyles(createStyles);
+  const router = useRouter();
 
   const dispatch = useAppDispatch();
 
@@ -57,6 +59,7 @@ export function PatientHomeScreen() {
       <>
         <PatientHomeHeader
           name={currentUser?.fullName ?? ""}
+          onDevTools={() => router.push("/(home)/dev-tools")}
           onLogout={handleLogout}
         />
 
@@ -69,7 +72,7 @@ export function PatientHomeScreen() {
         <SectionHeader title={sessionLabel} />
       </>
     );
-  }, [currentUser?.fullName, doctor, handleLogout, sessionLabel]);
+  }, [currentUser, doctor, handleLogout, router, sessionLabel]);
 
   const renderItem = useCallback<ListRenderItem<Session>>(({ item }) => {
     return (

@@ -33,7 +33,7 @@ export const handlePatientsByDoctorId = async (
     .filter((patient) => patient.doctorId === doctorId)
     .filter((patient) => !query || patient.fullName.toLowerCase().includes(query));
   if (query) {
-    await sleep(4000);
+    await sleep(400);
   }
 
   return generateResponse(config, STATUS_CODES.OK, patients);

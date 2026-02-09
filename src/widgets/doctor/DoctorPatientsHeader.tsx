@@ -14,12 +14,14 @@ interface DoctorPatientsHeaderProps {
   name: string;
   patientCount: number;
   onLogout: () => void;
+  onDevTools: () => void;
 }
 
 export function DoctorPatientsHeader({
   name,
   patientCount,
   onLogout,
+  onDevTools,
 }: DoctorPatientsHeaderProps) {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
@@ -35,6 +37,16 @@ export function DoctorPatientsHeader({
       </View>
 
       <View style={styles.actions}>
+        <TouchableOpacity
+          onPress={onDevTools}
+          accessibilityRole="button"
+          accessibilityLabel="Dev Tools"
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="bug-outline" size={22} color={colors.textSecondary} />
+        </TouchableOpacity>
+
         <TouchableOpacity
           onPress={onLogout}
           accessibilityRole="button"

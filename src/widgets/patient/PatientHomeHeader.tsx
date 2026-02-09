@@ -13,11 +13,13 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 interface PatientHomeHeaderProps {
   name: string;
   onLogout: () => void;
+  onDevTools: () => void;
 }
 
 export function PatientHomeHeader({
   name,
   onLogout,
+  onDevTools,
 }: PatientHomeHeaderProps) {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
@@ -30,6 +32,16 @@ export function PatientHomeHeader({
       </View>
 
       <View style={styles.actions}>
+        <TouchableOpacity
+          onPress={onDevTools}
+          accessibilityRole="button"
+          accessibilityLabel="Dev Tools"
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="bug-outline" size={22} color={colors.textSecondary} />
+        </TouchableOpacity>
+
         <TouchableOpacity
           onPress={onLogout}
         >
