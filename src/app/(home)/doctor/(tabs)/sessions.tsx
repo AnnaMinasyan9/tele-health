@@ -1,5 +1,1 @@
-import { Text } from "react-native";
-
-export default function DoctorSessionsScreen() {
-  return <Text>Doctor Sessions</Text>;
-}
+export { DoctorSessionsScreen as default } from "@features/doctor";

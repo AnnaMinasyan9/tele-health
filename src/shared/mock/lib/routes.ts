@@ -4,4 +4,5 @@ export const API_ROUTES = {
   PATIENTS_BY_DOCTOR_ID: "/patients/:doctorId/patients",
   DOCTOR_BY_ID: "/doctors/:doctorId",
   SESSIONS_BY_PATIENT_ID: "/sessions/patient/:patientId",
+  SESSIONS_BY_DOCTOR_ID: "/sessions/doctor/:doctorId",
 } as const;
