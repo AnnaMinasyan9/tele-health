@@ -1,18 +1,22 @@
 import type { Patient } from "@shared/models";
 import { logout, selectCurrentUser } from "@shared/store/auth";
 import { useAppDispatch, useAppSelector } from "@shared/store/hooks";
-import { selectDoctorPatients } from "@shared/store/patients/patients.selectors";
+import {
+  selectDoctorPatients,
+  selectIsPatientsLoading,
+} from "@shared/store/patients/patients.selectors";
 import { getPatientsByDoctorId } from "@shared/store/patients/patients.thunk";
 import { spacing, useStyles, type AppTheme } from "@shared/theme";
-import { EmptyState } from "@shared/ui";
+import { EmptyState, SearchField } from "@shared/ui";
 import { DoctorPatientsHeader, PatientRow } from "@widgets";
 import { useRouter } from "expo-router";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
+
+const SEARCH_DEBOUNCE_MS = 400;
 
 export function DoctorPatientsScreen() {
   const styles = useStyles(createStyles);
-
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -20,15 +24,40 @@ export function DoctorPatientsScreen() {
   const doctorId = currentUser?.id;
 
   const patients = useAppSelector((state) => selectDoctorPatients(state, doctorId));
+  const isPatientsLoading = useAppSelector(selectIsPatientsLoading);
+
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [hasSearchInteracted, setHasSearchInteracted] = useState(false);
+
+  const trimmedQuery = debouncedSearch.trim();
+  const showSearchLoading = hasSearchInteracted && isPatientsLoading;
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => setDebouncedSearch(search), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timeoutId);
+  }, [search]);
 
   useEffect(() => {
     if (!doctorId) return;
-    dispatch(getPatientsByDoctorId(doctorId));
-  }, [dispatch, doctorId]);
+
+    dispatch(
+      getPatientsByDoctorId({
+        doctorId,
+        search: trimmedQuery.length ? trimmedQuery : undefined,
+      })
+    );
+  }, [dispatch, doctorId, trimmedQuery]);
 
   const handleLogout = useCallback(() => {
     dispatch(logout());
   }, [dispatch]);
+
+  const handleChangeSearch = useCallback((text: string) => {
+    setHasSearchInteracted(true);
+    setSearch(text);
+  }, []);
+
   const openPatient = useCallback(
     (id: string) => {
       router.push(`/doctor/patient/${id}`);
@@ -42,7 +71,7 @@ export function DoctorPatientsScreen() {
     [openPatient]
   );
 
-  const keyExtractor = useCallback((item: Patient) => item.id ?? "", []);
+  const keyExtractor = useCallback((item: Patient) => item.id, []);
 
   const empty = useMemo(
     () => (
@@ -53,6 +82,17 @@ export function DoctorPatientsScreen() {
       />
     ),
     []
+  );
+
+  const listHeader = useMemo(
+    () => (
+      <SearchField
+        value={search}
+        onChangeText={handleChangeSearch}
+        loading={showSearchLoading}
+      />
+    ),
+    [handleChangeSearch, search, showSearchLoading]
   );
 
   return (
@@ -69,6 +109,7 @@ export function DoctorPatientsScreen() {
         renderItem={renderItem}
         initialNumToRender={10}
         contentContainerStyle={styles.list}
+        ListHeaderComponent={listHeader}
         ListEmptyComponent={empty}
       />
     </View>

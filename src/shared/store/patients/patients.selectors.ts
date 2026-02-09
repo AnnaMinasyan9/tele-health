@@ -1,4 +1,4 @@
-import type { Patient } from "@shared/models";
+import { RequestStatus, type Patient } from "@shared/models";
 import type { RootState } from "../store";
 
 const EMPTY_PATIENTS: Patient[] = [];
@@ -19,3 +19,5 @@ export const selectDoctorPatientById = (
   const patients = selectDoctorPatients(state, doctorId);
   return patients.find((patient) => patient.id === patientId) ?? EMPTY_PATIENT;
 };
+
+export const selectIsPatientsLoading = (state: RootState) => state.patients.status === RequestStatus.PENDING;

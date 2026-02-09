@@ -16,7 +16,7 @@ const patientsSlice = createSlice({
       .addCase(getPatientsByDoctorId.fulfilled, (state, action) => {
         state.status = RequestStatus.SUCCEEDED;
         state.error = null;
-        const doctorId = action.meta.arg;
+        const { doctorId } = action.meta.arg;
         state.doctorPatients[doctorId] = action.payload;
       })
       .addCase(getPatientsByDoctorId.rejected, (state, action) => {

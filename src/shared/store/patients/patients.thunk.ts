@@ -6,12 +6,16 @@ import axios from "axios";
 
 export const getPatientsByDoctorId = createAsyncThunk<
   Patient[],
-  string,
+  { doctorId: string; search?: string },
   { rejectValue: string }
->("patients/getPatientsByDoctorId", async (doctorId, { rejectWithValue, fulfillWithValue }) => {
+>(
+  "patients/getPatientsByDoctorId",
+  async (arg, { rejectWithValue, fulfillWithValue }) => {
   try {
+    const { doctorId, search } = arg;
     const response = await mockAPIServer.get<Patient[]>(
       API_ROUTES.PATIENTS_BY_DOCTOR_ID.replace(":doctorId", doctorId),
+      search ? { params: { search } } : undefined
     );
     return fulfillWithValue(response.data);
   } catch (err: unknown) {
