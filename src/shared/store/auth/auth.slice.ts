@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RequestStatus } from "@shared/models";
 import { initialState } from "./auth.state";
-import { login, logout } from "./auth.thunk";
+import { hydrateAuth, login, logout } from "./auth.thunk";
 
 const authSlice = createSlice({
     name: "auth",
@@ -9,6 +9,10 @@ const authSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(hydrateAuth.fulfilled, (state, action) => {
+                state.user = action.payload;
+                state.role = action.payload?.role ?? null;
+            })
             .addCase(login.pending, (state) => {
                 state.status = RequestStatus.PENDING;
                 state.error = null;
