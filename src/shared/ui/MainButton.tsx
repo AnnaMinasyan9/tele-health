@@ -1,4 +1,12 @@
-import { colors, fontSizes, fontWeights, spacing, theme } from "@shared/theme";
+import {
+  fontSizes,
+  fontWeights,
+  spacing,
+  theme,
+  useStyles,
+  useTheme,
+  type AppTheme,
+} from "@shared/theme";
 import {
   ActivityIndicator,
   StyleSheet,
@@ -26,6 +34,8 @@ export function MainButton({
   accessibilityLabel,
 }: MainButtonProps) {
   const isDisabled = disabled || loading;
+  const { colors } = useTheme();
+  const styles = useStyles(createStyles);
 
   return (
     <TouchableOpacity
@@ -46,19 +56,21 @@ export function MainButton({
   );
 }
 
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: colors.primary,
-    borderRadius: theme.radii.lg,
-    paddingVertical: spacing.xl,
-    alignItems: "center",
-  },
-  disabled: {
-    opacity: 0.7,
-  },
-  text: {
-    color: colors.textOnPrimary,
-    fontSize: fontSizes.body,
-    fontWeight: fontWeights.semibold,
-  },
-});
+function createStyles(t: AppTheme) {
+  return StyleSheet.create({
+    button: {
+      backgroundColor: t.colors.primary,
+      borderRadius: theme.radii.lg,
+      paddingVertical: spacing.xl,
+      alignItems: "center",
+    },
+    disabled: {
+      opacity: 0.7,
+    },
+    text: {
+      color: t.colors.textOnPrimary,
+      fontSize: fontSizes.body,
+      fontWeight: fontWeights.semibold,
+    },
+  });
+}

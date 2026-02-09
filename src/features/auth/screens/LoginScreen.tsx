@@ -1,12 +1,13 @@
 import { useAppDispatch } from "@shared/store";
 import {
-  colors,
   fontSizes,
   fontWeights,
   letterSpacings,
   shadows,
   spacing,
   theme,
+  useStyles,
+  type AppTheme,
 } from "@shared/theme";
 
 import { MainButton, TextField } from "@shared/ui";
@@ -33,6 +34,8 @@ const DEMO = {
 type DemoRole = keyof typeof DEMO;
 
 export function LoginScreen() {
+  const styles = useStyles(createStyles);
+
   const {
     control,
     handleSubmit,
@@ -162,64 +165,66 @@ export function LoginScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-    justifyContent: "center",
-    paddingHorizontal: spacing.xxxxl,
-  },
-  card: {
-    backgroundColor: colors.surface,
-    borderRadius: theme.radii.xxl,
-    padding: spacing.xxxxl,
-    ...shadows.elevated,
-  },
-  title: {
-    fontSize: fontSizes.hero,
-    fontWeight: fontWeights.bold,
-    color: colors.textPrimary,
-    textAlign: "center",
-  },
-  subtitle: {
-    fontSize: fontSizes.lg,
-    color: colors.textSecondary,
-    textAlign: "center",
-    marginTop: spacing.xs,
-    marginBottom: spacing.xxxxl,
-  },
-  error: {
-    color: colors.error,
-    fontSize: fontSizes.base,
-    marginBottom: spacing.lg,
-    textAlign: "center",
-  },
-  button: {
-    marginTop: spacing.xl,
-  },
-  hint: {
-    marginTop: spacing.xxxl,
-    paddingTop: spacing.xxl,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    alignItems: "center",
-  },
-  hintTitle: {
-    fontSize: fontSizes.md,
-    fontWeight: fontWeights.semibold,
-    color: colors.textTertiary,
-    marginBottom: spacing.sm,
-    textTransform: "uppercase",
-    letterSpacing: letterSpacings.wide,
-  },
-  hintCred: {
-    fontSize: fontSizes.md,
-    color: colors.primary,
-    marginTop: spacing.xs,
-  },
-  hintPassword: {
-    fontSize: fontSizes.sm,
-    color: colors.textTertiary,
-    marginTop: spacing.sm,
-  },
-});
+function createStyles(t: AppTheme) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: t.colors.background,
+      justifyContent: "center",
+      paddingHorizontal: spacing.xxxxl,
+    },
+    card: {
+      backgroundColor: t.colors.surface,
+      borderRadius: theme.radii.xxl,
+      padding: spacing.xxxxl,
+      ...shadows.elevated,
+    },
+    title: {
+      fontSize: fontSizes.hero,
+      fontWeight: fontWeights.bold,
+      color: t.colors.textPrimary,
+      textAlign: "center",
+    },
+    subtitle: {
+      fontSize: fontSizes.lg,
+      color: t.colors.textSecondary,
+      textAlign: "center",
+      marginTop: spacing.xs,
+      marginBottom: spacing.xxxxl,
+    },
+    error: {
+      color: t.colors.error,
+      fontSize: fontSizes.base,
+      marginBottom: spacing.lg,
+      textAlign: "center",
+    },
+    button: {
+      marginTop: spacing.xl,
+    },
+    hint: {
+      marginTop: spacing.xxxl,
+      paddingTop: spacing.xxl,
+      borderTopWidth: 1,
+      borderTopColor: t.colors.border,
+      alignItems: "center",
+    },
+    hintTitle: {
+      fontSize: fontSizes.md,
+      fontWeight: fontWeights.semibold,
+      color: t.colors.textTertiary,
+      marginBottom: spacing.sm,
+      textTransform: "uppercase",
+      letterSpacing: letterSpacings.wide,
+    },
+    hintCred: {
+      fontSize: fontSizes.md,
+      color: t.colors.primary,
+      marginTop: spacing.xs,
+    },
+    hintPassword: {
+      fontSize: fontSizes.sm,
+      color: t.colors.textTertiary,
+      marginTop: spacing.sm,
+    },
+  });
+}

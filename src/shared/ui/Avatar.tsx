@@ -1,4 +1,4 @@
-import { colors, fontWeights } from "@shared/theme";
+import { fontWeights, useTheme } from "@shared/theme";
 import { useCallback, useMemo, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
@@ -14,14 +14,17 @@ export function Avatar({
   name,
   uri,
   size = 44,
-  bg = colors.primaryLight,
-  color = colors.primary,
+  bg,
+  color,
 }: AvatarProps) {
   const [imgError, setImgError] = useState(false);
+  const { colors } = useTheme();
 
   const onError = useCallback(() => setImgError(true), []);
 
   const showImage = !!uri && !imgError;
+  const resolvedBg = bg ?? colors.primaryLight;
+  const resolvedColor = color ?? colors.primary;
 
   const initials = useMemo(() => {
     if (!name) return "?";
@@ -46,7 +49,7 @@ export function Avatar({
           width: size,
           height: size,
           borderRadius,
-          backgroundColor: showImage ? "transparent" : bg,
+          backgroundColor: showImage ? "transparent" : resolvedBg,
         },
       ]}
       accessibilityRole="image"
@@ -60,7 +63,7 @@ export function Avatar({
         />
       ) : (
         <Text
-          style={[styles.text, { fontSize, color }]}
+          style={[styles.text, { fontSize, color: resolvedColor }]}
           allowFontScaling={false}
         >
           {initials}

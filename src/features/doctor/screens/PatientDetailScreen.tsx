@@ -5,7 +5,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 import { EmptyState, MainButton, NavHeader, SectionHeader } from "@/shared/ui";
 import { PatientProfileCard, SessionRow } from "@/widgets";
 import type { CreateSessionPayload, Session } from "@shared/models";
-import { colors, spacing } from "@shared/theme";
+import { spacing, useStyles, type AppTheme } from "@shared/theme";
 
 import { selectCurrentUser } from "@shared/store/auth";
 import { useAppDispatch, useAppSelector } from "@shared/store/hooks";
@@ -17,6 +17,8 @@ import {
 } from "@shared/store/session/session.selector";
 
 export function PatientDetailScreen() {
+  const styles = useStyles(createStyles);
+
   const { id: patientId } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -123,7 +125,7 @@ export function PatientDetailScreen() {
   }
 
   return (
-    <>
+    <View style={styles.container}>
       <NavHeader title={patient.fullName} onBack={handleBack} />
 
       <FlatList
@@ -131,25 +133,32 @@ export function PatientDetailScreen() {
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         initialNumToRender={10}
+        style={styles.container}
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={ListHeaderComponent}
         ListEmptyComponent={ListEmptyComponent}
       />
-    </>
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
-  center: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: colors.background,
-  },
-  listContent: { paddingBottom: spacing.jumboLg },
-  rowWrapper: { paddingHorizontal: spacing.xxl },
-  scheduleButton: {
-    marginHorizontal: spacing.xxl,
-    marginTop: spacing.xxl,
-  },
-});
+function createStyles(t: AppTheme) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: t.colors.background,
+    },
+    center: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: t.colors.background,
+    },
+    listContent: { paddingBottom: spacing.jumboLg },
+    rowWrapper: { paddingHorizontal: spacing.xxl },
+    scheduleButton: {
+      marginHorizontal: spacing.xxl,
+      marginTop: spacing.xxl,
+    },
+  });
+}

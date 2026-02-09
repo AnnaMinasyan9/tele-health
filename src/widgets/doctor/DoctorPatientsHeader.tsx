@@ -1,9 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import {
-  colors,
   fontSizes,
   fontWeights,
   spacing,
+  useStyles,
+  useTheme,
+  type AppTheme,
 } from "@shared/theme";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -20,6 +22,8 @@ export function DoctorPatientsHeader({
   onLogout,
 }: DoctorPatientsHeaderProps) {
   const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
+  const styles = useStyles(createStyles);
 
   return (
     <View style={[styles.header, { paddingTop: insets.top + spacing.lg }]}>
@@ -45,30 +49,32 @@ export function DoctorPatientsHeader({
   );
 }
 
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: colors.surface,
-    paddingHorizontal: spacing.xxxl,
-    paddingBottom: spacing.xxl,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  greeting: {
-    fontSize: fontSizes.heading,
-    fontWeight: fontWeights.bold,
-    color: colors.textPrimary,
-  },
-  count: {
-    fontSize: fontSizes.md,
-    color: colors.textSecondary,
-    marginTop: spacing.xxs,
-  },
-  actions: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: spacing.lg,
-  },
-});
+function createStyles(t: AppTheme) {
+  return StyleSheet.create({
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      backgroundColor: t.colors.surface,
+      paddingHorizontal: spacing.xxxl,
+      paddingBottom: spacing.xxl,
+      borderBottomWidth: 1,
+      borderBottomColor: t.colors.border,
+    },
+    greeting: {
+      fontSize: fontSizes.heading,
+      fontWeight: fontWeights.bold,
+      color: t.colors.textPrimary,
+    },
+    count: {
+      fontSize: fontSizes.md,
+      color: t.colors.textSecondary,
+      marginTop: spacing.xxs,
+    },
+    actions: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: spacing.lg,
+    },
+  });
+}

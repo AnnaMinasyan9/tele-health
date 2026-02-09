@@ -3,7 +3,7 @@ import { logout, selectCurrentUser } from "@shared/store/auth";
 import { useAppDispatch, useAppSelector } from "@shared/store/hooks";
 import { selectDoctorPatients } from "@shared/store/patients/patients.selectors";
 import { getPatientsByDoctorId } from "@shared/store/patients/patients.thunk";
-import { colors, spacing } from "@shared/theme";
+import { spacing, useStyles, type AppTheme } from "@shared/theme";
 import { EmptyState } from "@shared/ui";
 import { DoctorPatientsHeader, PatientRow } from "@widgets";
 import { useRouter } from "expo-router";
@@ -11,6 +11,8 @@ import { useCallback, useEffect, useMemo } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 export function DoctorPatientsScreen() {
+  const styles = useStyles(createStyles);
+
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -73,7 +75,9 @@ export function DoctorPatientsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  list: { padding: spacing.xxl },
-});
+function createStyles(t: AppTheme) {
+  return StyleSheet.create({
+    container: { flex: 1, backgroundColor: t.colors.background },
+    list: { padding: spacing.xxl },
+  });
+}

@@ -5,11 +5,13 @@ import type { Session } from "@shared/models";
 import { selectCurrentUser } from "@shared/store/auth";
 import { useAppDispatch, useAppSelector } from "@shared/store/hooks";
 import { getSessionsByDoctorId, selectDoctorSessions } from "@shared/store/session";
-import { colors, spacing } from "@shared/theme";
+import { spacing, useStyles, type AppTheme } from "@shared/theme";
 import { EmptyState } from "@shared/ui";
 import { DoctorSessionsHeader, SessionRow } from "@widgets";
 
 export function DoctorSessionsScreen() {
+  const styles = useStyles(createStyles);
+
   const dispatch = useAppDispatch();
 
   const doctorId = useAppSelector(selectCurrentUser)?.id;
@@ -54,7 +56,9 @@ export function DoctorSessionsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  list: { paddingHorizontal: spacing.xxl, paddingVertical: spacing.xxl },
-});
+function createStyles(t: AppTheme) {
+  return StyleSheet.create({
+    container: { flex: 1, backgroundColor: t.colors.background },
+    list: { paddingHorizontal: spacing.xxl, paddingVertical: spacing.xxl },
+  });
+}

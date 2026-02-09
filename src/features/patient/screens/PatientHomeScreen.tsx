@@ -7,11 +7,13 @@ import { logout, selectCurrentUser } from "@shared/store/auth";
 import { getDoctorById, selectDoctor } from "@shared/store/doctor";
 import { useAppDispatch, useAppSelector } from "@shared/store/hooks";
 import { getSessionsByPatientId, selectSessionsByPatientId } from "@shared/store/session";
-import { spacing } from "@shared/theme";
+import { spacing, useStyles, type AppTheme } from "@shared/theme";
 import { EmptyState, SectionHeader } from "@shared/ui";
 import { DoctorCard, PatientHomeHeader, SessionRow } from "@widgets";
 
 export function PatientHomeScreen() {
+  const styles = useStyles(createStyles);
+
   const dispatch = useAppDispatch();
 
   const currentUser = useAppSelector(selectCurrentUser);
@@ -83,6 +85,7 @@ export function PatientHomeScreen() {
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       initialNumToRender={10}
+      style={styles.container}
       contentContainerStyle={styles.listContent}
       ListHeaderComponent={ListHeaderComponent}
       ListEmptyComponent={ListEmptyComponent}
@@ -91,11 +94,18 @@ export function PatientHomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  listContent: { paddingBottom: spacing.jumboLg },
-  rowWrapper: { paddingHorizontal: spacing.xxl },
-  doctorCardWrapper: {
-    marginHorizontal: spacing.xxl,
-    marginTop: spacing.xxl,
-  },
-});
+function createStyles(t: AppTheme) {
+  return StyleSheet.create({
+    container: { flex: 1, backgroundColor: t.colors.background },
+    listContent: {
+      paddingBottom: spacing.jumboLg,
+      backgroundColor: t.colors.background,
+      flexGrow: 1,
+    },
+    rowWrapper: { paddingHorizontal: spacing.xxl },
+    doctorCardWrapper: {
+      marginHorizontal: spacing.xxl,
+      marginTop: spacing.xxl,
+    },
+  });
+}

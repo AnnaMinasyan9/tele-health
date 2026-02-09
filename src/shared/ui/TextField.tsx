@@ -1,4 +1,12 @@
-import { colors, fontSizes, fontWeights, spacing, theme } from "@shared/theme";
+import {
+  fontSizes,
+  fontWeights,
+  spacing,
+  theme,
+  useStyles,
+  useTheme,
+  type AppTheme,
+} from "@shared/theme";
 import {
   StyleSheet,
   Text,
@@ -17,7 +25,7 @@ interface TextFieldProps extends TextInputProps {
 }
 
 export function TextField({
-  placeholderColor = colors.textTertiary,
+  placeholderColor,
   error = false,
   errorMessage,
   style,
@@ -25,11 +33,14 @@ export function TextField({
   autoCorrect = false,
   ...rest
 }: TextFieldProps) {
+  const { colors } = useTheme();
+  const styles = useStyles(createStyles);
+
   return (
     <View>
       <TextInput
         style={[styles.input, error && styles.inputError, style]}
-        placeholderTextColor={placeholderColor}
+        placeholderTextColor={placeholderColor ?? colors.textTertiary}
         autoCapitalize={autoCapitalize}
         autoCorrect={autoCorrect}
         {...rest}
@@ -43,27 +54,29 @@ export function TextField({
   );
 }
 
-const styles = StyleSheet.create({
-  input: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: theme.radii.md,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-    fontSize: fontSizes.base,
-    fontWeight: fontWeights.medium,
-    color: colors.textPrimary,
-    backgroundColor: colors.surface,
-  },
-  inputError: {
-    borderColor: colors.error,
-  },
-  fieldErrorContainer: {
-    height: 25,
-    paddingLeft: spacing.xs,
-  },
-  fieldError: {
-    color: colors.error,
-    fontSize: fontSizes.sm,
-  },
-});
+function createStyles(t: AppTheme) {
+  return StyleSheet.create({
+    input: {
+      borderWidth: 1,
+      borderColor: t.colors.border,
+      borderRadius: theme.radii.md,
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.md,
+      fontSize: fontSizes.base,
+      fontWeight: fontWeights.medium,
+      color: t.colors.textPrimary,
+      backgroundColor: t.colors.surface,
+    },
+    inputError: {
+      borderColor: t.colors.error,
+    },
+    fieldErrorContainer: {
+      height: 25,
+      paddingLeft: spacing.xs,
+    },
+    fieldError: {
+      color: t.colors.error,
+      fontSize: fontSizes.sm,
+    },
+  });
+}
