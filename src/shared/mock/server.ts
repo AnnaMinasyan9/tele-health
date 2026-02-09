@@ -5,6 +5,7 @@ import credentialsJson from "./db/credentials.json";
 import doctorsJson from "./db/doctors.json";
 import patientsJson from "./db/patients.json";
 import sessionsJson from "./db/sessions.json";
+import { attachMockRequestInterceptor } from "./interceptors";
 import { API_ROUTES, generateResponse, STATUS_CODES, VALIDATION_MESSAGES } from "./lib";
 import { handleAuthLogin, handleAuthLogout, handleCreateSession, handleDoctorById, handlePatientsByDoctorId, handleSessionsByDoctorId, handleSessionsByPatientId } from "./lib/handlers";
 import { MockDB } from "./models/db";
@@ -52,3 +53,5 @@ export const mockAPIServer = axios.create({
   baseURL: "/api",
   adapter,
 });
+
+attachMockRequestInterceptor(mockAPIServer);
