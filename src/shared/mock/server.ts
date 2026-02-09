@@ -5,7 +5,7 @@ import credentialsJson from "./db/credentials.json";
 import doctorsJson from "./db/doctors.json";
 import patientsJson from "./db/patients.json";
 import { API_ROUTES, generateResponse, STATUS_CODES, VALIDATION_MESSAGES } from "./lib";
-import { handleAuthLogin, handleAuthLogout, handlePatientsByDoctorId } from "./lib/handlers";
+import { handleAuthLogin, handleAuthLogout, handleDoctorById, handlePatientsByDoctorId } from "./lib/handlers";
 import { MockDB } from "./models/db";
 
 const db: MockDB = {
@@ -27,6 +27,9 @@ const adapter: AxiosAdapter = async (config) => {
     case /^\/patients\/[^/]+\/patients$/.test(url):
       return handlePatientsByDoctorId(db, config);
 
+    case /^\/doctors\/[^/]+$/.test(url):
+      return handleDoctorById(db, config);
+      
     default:
       return generateResponse(config, STATUS_CODES.NOT_FOUND, {
         message: VALIDATION_MESSAGES.NOT_FOUND,
