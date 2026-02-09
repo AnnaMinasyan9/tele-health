@@ -1,4 +1,4 @@
 export * from "./doctor";
 export * from "./patient";
-export * from "./PatientRow";
+export * from "./session";
 

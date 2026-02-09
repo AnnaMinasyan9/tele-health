@@ -1,0 +1,15 @@
+[
+    {
+      "id": "ses_1",
+      "doctorId": "doc_1",
+      "patientId": "pat_1",
+      "location": "Yerevan",
+      "durationMinutes": 30,
+      "startAt": "2026-02-09T08:00:00.000Z",
+      "sessionDetails": {
+        "patientName": "Anna Brown",
+        "doctorName":  "Dr. John Smith"
+      }
+    }
+  ]
+  

@@ -1,17 +1,19 @@
 import axios, { AxiosAdapter } from "axios";
 
-import { Doctor, Patient } from "@shared/models";
+import { Doctor, Patient, Session } from "@shared/models";
 import credentialsJson from "./db/credentials.json";
 import doctorsJson from "./db/doctors.json";
 import patientsJson from "./db/patients.json";
+import sessionsJson from "./db/sessions.json";
 import { API_ROUTES, generateResponse, STATUS_CODES, VALIDATION_MESSAGES } from "./lib";
-import { handleAuthLogin, handleAuthLogout, handleDoctorById, handlePatientsByDoctorId } from "./lib/handlers";
+import { handleAuthLogin, handleAuthLogout, handleDoctorById, handlePatientsByDoctorId, handleSessionsByPatientId } from "./lib/handlers";
 import { MockDB } from "./models/db";
 
 const db: MockDB = {
   credentials: credentialsJson,
   doctors: doctorsJson as Array<Doctor>,
   patients: patientsJson as Array<Patient>,
+  sessions: sessionsJson as Array<Session>,
 };
 
 const adapter: AxiosAdapter = async (config) => {
@@ -29,7 +31,10 @@ const adapter: AxiosAdapter = async (config) => {
 
     case /^\/doctors\/[^/]+$/.test(url):
       return handleDoctorById(db, config);
-      
+
+    case /^\/sessions\/patient\/[^/]+$/.test(url):
+      return handleSessionsByPatientId(db, config);
+
     default:
       return generateResponse(config, STATUS_CODES.NOT_FOUND, {
         message: VALIDATION_MESSAGES.NOT_FOUND,

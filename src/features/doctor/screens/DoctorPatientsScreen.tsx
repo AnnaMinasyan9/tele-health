@@ -27,15 +27,20 @@ export function DoctorPatientsScreen() {
   const handleLogout = useCallback(() => {
     dispatch(logout());
   }, [dispatch]);
-
+  const openPatient = useCallback(
+    (id: string) => {
+      router.push(`/doctor/patient/${id}`);
+    },
+    [router]
+  );
   const renderItem = useCallback(
     ({ item }: { item: Patient }) => (
-      <PatientRow patient={item}  />
+      <PatientRow patient={item} onPress={() => openPatient(item.id)} />
     ),
-    []
+    [openPatient]
   );
 
-  const keyExtractor = useCallback((item: Patient) => item.id, []);
+  const keyExtractor = useCallback((item: Patient) => item.id ?? "", []);
 
   const empty = useMemo(
     () => (
