@@ -4,9 +4,14 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
+    "start:dev-client": "expo start --dev-client",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "build:development": "npx eas build --profile development",
+    "build:development-device": "npx eas build --profile development-device",
+    "build:preproduction": "npx eas build --profile preproduction",
+    "build:production": "npx eas build --profile production",
     "lint": "expo lint"
   },
   "dependencies": {
@@ -20,6 +25,7 @@
     "axios-mock-adapter": "^2.1.0",
     "expo": "~54.0.33",
     "expo-constants": "~18.0.13",
+    "expo-dev-client": "^6.0.20",
     "expo-font": "~14.0.11",
     "expo-haptics": "~15.0.8",
     "expo-image": "~3.0.11",
