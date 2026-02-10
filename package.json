@@ -5,8 +5,8 @@
   "scripts": {
     "start": "expo start",
     "start:dev-client": "expo start --dev-client",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "bash ./scripts/android.sh",
+    "ios": "bash ./scripts/ios.sh",
     "web": "expo start --web",
     "build:development": "npx eas build --profile development",
     "build:development-device": "npx eas build --profile development-device",
