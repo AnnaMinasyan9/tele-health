@@ -29,7 +29,7 @@ export const sessionSlice = createSlice({
             .addCase(getSessionsByDoctorId.fulfilled, (state, action) => {
                 state.doctorSessionsStatus = RequestStatus.SUCCEEDED;
                 state.doctorSessionsError = null;
-                state.doctorSessions[action.meta.arg] = action.payload;
+                state.doctorSessions[action.meta.arg.doctorId] = action.payload;
             })
             .addCase(getSessionsByDoctorId.rejected, (state, action) => {
                 state.doctorSessionsStatus = RequestStatus.FAILED;

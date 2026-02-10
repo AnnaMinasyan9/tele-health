@@ -25,3 +25,6 @@ export const selectSessionsByDoctorAndPatientId = createSelector(
   }
 );
 export const selectIsSessionCreating = (state: RootState) => state.sessions.createSessionStatus === RequestStatus.PENDING;
+
+export const selectIsDoctorSessionsLoading = (state: RootState) =>
+  state.sessions.doctorSessionsStatus === RequestStatus.PENDING;

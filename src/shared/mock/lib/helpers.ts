@@ -75,3 +75,22 @@ export const nextFreeDay = (db: MockDB, doctorId: string, maxDays = 365): Date =
 
   throw new Error(`No free day found for doctor ${doctorId}`);
 };
+
+export function normalizeQuery(value: unknown): string {
+  if (typeof value !== "string") return "";
+  return value.trim().toLowerCase();
+}
+
+export function sleep(ms: number) {
+  return new Promise<void>((resolve) => setTimeout(resolve, ms));
+}
+
+export function getSearchQuery(config: InternalAxiosRequestConfig): string {
+  const url = config.url ?? "";
+  const [_, queryString = ""] = url.split("?");
+
+  const searchParams = new URLSearchParams(queryString);
+  const queryRaw = config.params?.search ?? searchParams.get("search") ?? "";
+
+  return normalizeQuery(queryRaw);
+}

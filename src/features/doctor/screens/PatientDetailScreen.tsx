@@ -38,7 +38,7 @@ export function PatientDetailScreen() {
 
   useEffect(() => {
     if (!doctorId) return;
-    dispatch(getSessionsByDoctorId(doctorId));
+    dispatch(getSessionsByDoctorId({ doctorId }));
   }, [dispatch, doctorId]);
 
   const handleBack = useCallback(() => router.back(), [router]);

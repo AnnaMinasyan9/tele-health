@@ -21,11 +21,15 @@ export const getSessionsByPatientId = createAsyncThunk<
 });
 export const getSessionsByDoctorId = createAsyncThunk<
     Session[],
-    string,
+    { doctorId: string; search?: string },
     { rejectValue: string }
->("session/getSessionsByDoctorId", async (doctorId, { rejectWithValue, fulfillWithValue }) => {
+>("session/getSessionsByDoctorId", async (arg, { rejectWithValue, fulfillWithValue }) => {
     try {
-        const response = await mockAPIServer.get<Session[]>(API_ROUTES.SESSIONS_BY_DOCTOR_ID.replace(":doctorId", doctorId));
+        const { doctorId, search } = arg;
+        const response = await mockAPIServer.get<Session[]>(
+            API_ROUTES.SESSIONS_BY_DOCTOR_ID.replace(":doctorId", doctorId),
+            search ? { params: { search } } : undefined
+        );
         return fulfillWithValue(response.data);
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
